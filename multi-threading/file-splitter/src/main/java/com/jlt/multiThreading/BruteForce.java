@@ -60,7 +60,7 @@ public class BruteForce extends Splitter{
 	
 	private void write(StringBuilder text, int filecount) {
 		PrintWriter writer = null;
-		String fileName = outputFolder + "/" + filecount + ".txt";
+		String fileName = outputFolder + "/data_" + filecount + ".txt";
 		try {
 			writer = new PrintWriter(new FileWriter(new File(fileName)));
 			writer.println(text);

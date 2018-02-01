@@ -17,14 +17,12 @@ public abstract class Splitter {
 	
 	public Splitter(File file, int linesPerFile, String outputFolder) {
 		super();
+		String type = this.getClass().getSimpleName();
+		String outPath = outputFolder + "/" + type + "/" + linesPerFile;
 		this.file = file;
 		this.linesPerFile = linesPerFile;
-		this.outputFolder = outputFolder;
+		this.outputFolder = outPath;
 	}
 
 	public abstract void split();
-
-	public void setLinesPerFile(int linesPerFile) {
-		this.linesPerFile = linesPerFile;
-	}
 }
