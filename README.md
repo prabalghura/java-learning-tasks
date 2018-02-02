@@ -2,6 +2,28 @@
 
 Added 2 implementations on file splitting for multi-threading Task 1.
 
+
+# For Task 1 - Multi-threading
+go to com.jlt.multiThreading.SplitDriver and give:
+
+basePath which has input File
+outputFolder represents relative path inside basePath for output files
+inputFileName
+
+inside outputFolder create a directory structure like this:
+-   /ForkJoin/10
+			/50
+			/100
+			/500
+			/1000
+-	/BruteForce/10
+			/50
+			/100
+			/500
+			/1000
+			
+And run SplitDriver as java application
+
 By ForkJoin
 For 1000 Time Taken 1.36 seconds
 For 500 Time Taken 0.673 seconds
