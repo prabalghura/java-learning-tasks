@@ -7,6 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation class for Splitting up using Brute Force Technique
@@ -24,7 +30,7 @@ public class BruteForce extends Splitter{
 	public void split() {
 		long time = System.currentTimeMillis();
 		BufferedReader fileReader = null;
-		StringBuilder fileText = new StringBuilder("");
+		List<String> fileText = new ArrayList<String>();
 		String fileLine = "";
 		int linecounter = 0;
 		int filecounter = 0;
@@ -33,11 +39,11 @@ public class BruteForce extends Splitter{
 			fileLine = fileReader.readLine();
 			while(fileLine != null) {
 				linecounter++;
-				fileText.append(fileLine).append("/n");
+				fileText.add(fileLine);
 				if(linecounter==linesPerFile) {
 					linecounter=0;
 					write(fileText, filecounter++);
-					fileText.setLength(0);
+					fileText.clear();
 				}
 				fileLine = fileReader.readLine();
 			}
@@ -58,20 +64,12 @@ public class BruteForce extends Splitter{
 		System.out.println("For " + linesPerFile + " Time Taken "+ (timetaken/1000) + "." + (timetaken%1000) + " seconds");
 	}
 	
-	private void write(StringBuilder text, int filecount) {
-		PrintWriter writer = null;
-		String fileName = outputFolder + "/data_" + filecount + ".txt";
+	private void write(List<String>  text, int filecount) {
 		try {
-			writer = new PrintWriter(new FileWriter(new File(fileName)));
-			writer.println(text);
+			Path path = Paths.get(outputFolder, "data_"+ filecount +".csv");
+			Files.write(path, text, Charset.defaultCharset());
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				writer.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 	}
 }
