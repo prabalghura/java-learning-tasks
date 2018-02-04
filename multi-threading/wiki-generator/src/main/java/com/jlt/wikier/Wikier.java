@@ -1,4 +1,4 @@
-package com.jlt.multiThreading;
+package com.jlt.wikier;
 
 import java.io.BufferedReader;
 import java.io.IOException;
