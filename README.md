@@ -2,6 +2,25 @@
 
 Added 2 implementations on file splitting for multi-threading Task 1.
 
+# For Task 2 - Multi-threading
+go to com.jlt.wikier.WikiDriver and give:
+
+basePath which has all the input Files
+change variable files & readerTypes (in main method) for various file/file_formats combination to be read.
+
+inside basePath create a directory structure like this:
+-	/BruteForce/LineSeparated/log
+				/CommaSeparated/log
+				/LineTabSeparated/log
+
+And run WikiDriver as java application
+
+By BruteForce
+For LineSeparated Time Taken 225.118 seconds
+For CommaSeparated Time Taken 37.436 seconds
+For LineTabSeparated Time Taken 52.798 seconds
+
+you will get as output files in the basePath/type folder, log files are inside respective log folders
 
 # For Task 1 - Multi-threading
 go to com.jlt.multiThreading.SplitDriver and give:

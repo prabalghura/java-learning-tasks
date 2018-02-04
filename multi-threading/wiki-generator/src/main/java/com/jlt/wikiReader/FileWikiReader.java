@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Abstrcat class for reading various file formats and providing list of keywords.
+ * Abstract class for reading various file formats and providing list of keywords.
  * 
  * @author Prabal Ghura
  *
