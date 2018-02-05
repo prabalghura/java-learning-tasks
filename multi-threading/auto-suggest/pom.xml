@@ -2,16 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.imaginea.multi</groupId>
-    <artifactId>learning-tasks</artifactId>
+    <artifactId>multi-threading</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>multi-threading</artifactId>
-  <packaging>pom</packaging>
-  <name>multi-threading</name>
-  <description>Parent Module for Multi-threading tasks</description>
-  <modules>
-  	<module>file-splitter</module>
-  	<module>file-counter</module>
-  	<module>auto-suggest</module>
-  </modules>
+  <artifactId>auto-suggest</artifactId>
+  <name>auto-suggest</name>
+  <description>to provide suggestions on list of pre-stored words for a keyword entered.</description>
 </project>

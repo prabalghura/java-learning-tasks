@@ -2,16 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.imaginea.multi</groupId>
-    <artifactId>learning-tasks</artifactId>
+    <artifactId>collections</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>multi-threading</artifactId>
-  <packaging>pom</packaging>
-  <name>multi-threading</name>
-  <description>Parent Module for Multi-threading tasks</description>
-  <modules>
-  	<module>file-splitter</module>
-  	<module>file-counter</module>
-  	<module>auto-suggest</module>
-  </modules>
+  <artifactId>HRScheduling</artifactId>
+  <name>HRScheduling</name>
+  <description>for implementing HR Scheduling Task1</description>
 </project>

@@ -5,13 +5,12 @@
     <artifactId>learning-tasks</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>multi-threading</artifactId>
+  <artifactId>collections</artifactId>
   <packaging>pom</packaging>
-  <name>multi-threading</name>
-  <description>Parent Module for Multi-threading tasks</description>
+  <name>collections</name>
+  <description>parent project for collection tasks</description>
   <modules>
-  	<module>file-splitter</module>
-  	<module>file-counter</module>
-  	<module>auto-suggest</module>
+  	<module>LRU</module>
+  	<module>HRScheduling</module>
   </modules>
 </project>

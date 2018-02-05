@@ -2,16 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.imaginea.multi</groupId>
-    <artifactId>learning-tasks</artifactId>
+    <artifactId>multi-threading</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>multi-threading</artifactId>
-  <packaging>pom</packaging>
-  <name>multi-threading</name>
-  <description>Parent Module for Multi-threading tasks</description>
-  <modules>
-  	<module>file-splitter</module>
-  	<module>file-counter</module>
-  	<module>auto-suggest</module>
-  </modules>
+  <artifactId>file-counter</artifactId>
+  <name>word-counter</name>
+  <description>to count number of distinct words in a set of files</description>
 </project>
