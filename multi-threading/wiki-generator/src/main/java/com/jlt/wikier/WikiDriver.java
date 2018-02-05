@@ -23,7 +23,7 @@ public class WikiDriver {
 		String[] files = {"Multithreading_Task2_ProgrammingLanguages.txt",
 				"Multithreading_Task_2_java Keywords.txt",
 				"Multithreading_Task_2_fortune1000companies.txt"};
-		String[] types = {"BruteForce"};
+		String[] types = {"BruteForce", "Async"};
 		for(String type: types) {
 			System.out.println("By " + type);
 			for(int i=0; i<readerTypes.length; i++) {
@@ -31,7 +31,7 @@ public class WikiDriver {
 				String reader = readerTypes[i];
 				File file = new File(basePath, files[i]);
 				FileWikiReader wikireader = FileReaderFactory.getFileReader(reader, file);
-				Wikier wikier = new BFWikier(wikireader, basePath + "/" + type + "/" + reader);
+				Wikier wikier = WikierFactory.getFileReader(type, wikireader, basePath + "/" + type + "/" + reader);
 				wikier.makeCallsAndCreateFiles();
 				long timetaken = System.currentTimeMillis() - time;
 				System.out.println("For " + reader + " Time Taken "+ (timetaken/1000) + 

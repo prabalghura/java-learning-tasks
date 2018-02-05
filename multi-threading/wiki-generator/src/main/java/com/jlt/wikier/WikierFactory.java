@@ -13,6 +13,8 @@ public class WikierFactory {
 		switch (type) {
 		case "BruteForce":
 			return new BFWikier(reader, outputFolder);
+		case "Async":
+			return new AsyncWikier(reader, outputFolder);
 		default:
 			return null;
 		}
