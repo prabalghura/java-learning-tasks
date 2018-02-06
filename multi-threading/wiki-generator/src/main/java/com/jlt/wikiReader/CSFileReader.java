@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Implementation for reading comma separated keywords in a file
@@ -15,6 +17,8 @@ import java.util.List;
  *
  */
 public class CSFileReader extends FileWikiReader{
+	
+	private static final Logger log = Logger.getLogger(CSFileReader.class.getName());
 
 	public CSFileReader(File file) {
 		super(file);
@@ -30,14 +34,14 @@ public class CSFileReader extends FileWikiReader{
 			br.readLine();
 			line = br.readLine();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		} finally {
 			try {
 				br.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.log(Level.SEVERE, e.getMessage());
 			}
 		}
 		String[] keywordsRaw = line.split(",");

@@ -7,6 +7,8 @@ import java.io.InterruptedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -23,7 +25,15 @@ import org.apache.http.protocol.HttpCoreContext;
 import com.jlt.wikiReader.FileWikiReader;
 import com.jlt.wikier.utils.ApacheUtils;
 
+/**
+ * Implementation for making wiki calls (using apache API) and creating files.
+ * 
+ * @author Prabal Ghura
+ *
+ */
 public class AsyncWikier extends Wikier{
+	
+	private static final Logger log = Logger.getLogger(AsyncWikier.class.getName());
 
 	public AsyncWikier(FileWikiReader reader, String outputFolder) {
 		super(reader, outputFolder);
@@ -42,9 +52,9 @@ public class AsyncWikier extends Wikier{
                 try {
                     ioReactor.execute(ioEventDispatch);
                 } catch (final InterruptedIOException ex) {
-                    System.err.println("Interrupted");
+                	log.log(Level.SEVERE, ex.getMessage());
                 } catch (final IOException e) {
-                    System.err.println("I/O error: " + e.getMessage());
+                	log.log(Level.SEVERE, e.getMessage());
                 }
             }
 
@@ -55,63 +65,80 @@ public class AsyncWikier extends Wikier{
         String urlParts[] = getBaseUrl();
 		HttpAsyncRequester requester = ApacheUtils.getHttpAsyncRequester();
 		HttpHost target = new HttpHost(urlParts[1], -1, urlParts[0]);
-		BasicNIOConnPool pool = ApacheUtils.getBasicNIOConnPool(ioReactor, 30000);
+		BasicNIOConnPool pool = ApacheUtils.getBasicNIOConnPool(ioReactor, 300000);
 		HttpCoreContext context = HttpCoreContext.create();
-        CountDownLatch latch = new CountDownLatch(1);
+		
+		List<String> keywords = reader.getKeywords();
+		int packSize = 60;
         
         //Create producers & consumers for supplied keywords
-        List<String> keywords = reader.getKeywords();
-        List<BasicAsyncRequestProducer> requestProducers = new ArrayList<BasicAsyncRequestProducer>();
-        List<BasicAsyncResponseConsumer> responseConsumers = new ArrayList<BasicAsyncResponseConsumer>();
-		for(String keyword: keywords) {
-			requestProducers.add(new BasicAsyncRequestProducer(target, 
-					new BasicHttpRequest("GET", urlParts[2]+keyword)));
-			responseConsumers.add(new BasicAsyncResponseConsumer());
-		}
-		
-		// Limit total number of connections to just two
-		pool.setDefaultMaxPerRoute(2);
-		pool.setMaxTotal(2);
-		
-        requester.executePipelined(
-                target, requestProducers, responseConsumers, pool, context,
-                new FutureCallback<List<HttpResponse>>() {
-
-                    @Override
-                    public void completed(final List<HttpResponse> result) {
-                        latch.countDown();
-                        for (HttpResponse response: result) {
-                        	try {
-                        		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                        		String line = rd.readLine();
-                        		if(line == null)
-                        			System.out.println(target+"->"+response.getStatusLine());
-                        		else
-                        			System.out.println(line);
-							} catch (UnsupportedOperationException | IOException e) {
-								e.printStackTrace();
-							}
-                        }
-                    }
-
-                    @Override
-                    public void failed(final Exception ex) {
-                        latch.countDown();
-                        System.err.println(target + "->" + ex);
-                    }
-
-                    @Override
-                    public void cancelled() {
-                        latch.countDown();
-                        System.err.println(target + "-> cancelled");
-                    }
-
-                });
-
+        int counter = 0;
+        while(counter<keywords.size()) {
+        	CountDownLatch latch = new CountDownLatch(1);
+        	List<String> partKeywords;
+        	if(counter+packSize<keywords.size())
+        		partKeywords = keywords.subList(counter, counter+packSize);
+        	else
+        		partKeywords = keywords.subList(counter, keywords.size());
+        	counter+=packSize;
+        	
+        	List<BasicAsyncRequestProducer> requestProducers = new ArrayList<BasicAsyncRequestProducer>();
+        	List<BasicAsyncResponseConsumer> responseConsumers = new ArrayList<BasicAsyncResponseConsumer>();
+        	for(String keyword: partKeywords) {
+        		requestProducers.add(new BasicAsyncRequestProducer(target, 
+        				new BasicHttpRequest("GET", urlParts[2]+keyword)));
+        		responseConsumers.add(new BasicAsyncResponseConsumer());
+        	}
+        	
+        	// Limit total number of connections to just two
+        	pool.setDefaultMaxPerRoute(2);
+        	pool.setMaxTotal(2);
+        	
+        	requester.executePipelined(
+        			target, requestProducers, responseConsumers, pool, context,
+        			new FutureCallback<List<HttpResponse>>() {
+        				
+        				@Override
+        				public void completed(final List<HttpResponse> result) {
+        					latch.countDown();
+        					for (int i=0; i<packSize ;i++) {
+        						try {
+        							HttpResponse response = result.get(i);
+        							String word = partKeywords.get(i);
+        							BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        							String line = rd.readLine();
+        							if(line == null)
+        								log.log(Level.INFO, word+"->"+response.getStatusLine().getStatusCode());
+        							else
+        								log.log(Level.INFO, line);
+        						} catch (UnsupportedOperationException | IOException e) {
+        							log.log(Level.SEVERE, e.getMessage());
+        						}
+        					}
+        				}
+        				
+        				@Override
+        				public void failed(final Exception ex) {
+        					latch.countDown();
+        					log.log(Level.SEVERE, target + "->" + ex);
+        				}
+        				
+        				@Override
+        				public void cancelled() {
+        					latch.countDown();
+        					log.log(Level.SEVERE, target + "-> cancelled");
+        				}
+        				
+        			});
+        	try {
+        		latch.await();
+        	} catch (InterruptedException e) {
+        		e.printStackTrace();
+        	}
+        }
         try {
-			latch.await();
 			ioReactor.shutdown();
-		} catch (InterruptedException | IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

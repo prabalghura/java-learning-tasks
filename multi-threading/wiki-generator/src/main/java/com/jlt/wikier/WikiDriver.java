@@ -1,10 +1,15 @@
 package com.jlt.wikier;
 
-import java.io.File;
 import java.text.DecimalFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.jlt.wikiReader.FileReaderFactory;
+import com.jlt.wikiReader.FileReaderType;
 import com.jlt.wikiReader.FileWikiReader;
+import com.jlt.wikier.utils.FileReaderTypeNotFound;
+import com.jlt.wikier.utils.WikiConstants;
+import com.jlt.wikier.utils.WikierTypeNotFound;
 
 /**
  * Driver class for making a wiki calls based on keywords in 
@@ -15,26 +20,28 @@ import com.jlt.wikiReader.FileWikiReader;
  */
 public class WikiDriver {
 	
-	private static final String basePath = "/home/prabhalg/Documents/Projects/Java/Task2";
+	private static final Logger log = Logger.getLogger(WikiDriver.class.getName());
 	
 	public static void main(String[] args) {
 		DecimalFormat df = new DecimalFormat("#000");
-		String[] readerTypes = {"LineSeparated", "CommaSeparated", "LineTabSeparated"};
-		String[] files = {"Multithreading_Task2_ProgrammingLanguages.txt",
-				"Multithreading_Task_2_java Keywords.txt",
-				"Multithreading_Task_2_fortune1000companies.txt"};
-		String[] types = {"BruteForce", "Async"};
-		for(String type: types) {
-			System.out.println("By " + type);
-			for(int i=0; i<readerTypes.length; i++) {
+		FileReaderType[] readerTypes = FileReaderType.values();
+		WikierType[] implementationTypes = WikierType.values();
+		for(WikierType implementationType: implementationTypes) {
+			log.log(Level.INFO, "By " + implementationType);
+			for(FileReaderType readerType: readerTypes) {
 				long time = System.currentTimeMillis();
-				String reader = readerTypes[i];
-				File file = new File(basePath, files[i]);
-				FileWikiReader wikireader = FileReaderFactory.getFileReader(reader, file);
-				Wikier wikier = WikierFactory.getFileReader(type, wikireader, basePath + "/" + type + "/" + reader);
+				FileWikiReader wikireader = null;
+				Wikier wikier = null;
+				try {
+					wikireader = FileReaderFactory.getFileReader(readerType, WikiConstants.getFile(readerType));
+					wikier = WikierFactory.getFileReader(implementationType, wikireader, 
+							WikiConstants.basePath + "/" + implementationType + "/" + readerType);
+				} catch (FileReaderTypeNotFound | WikierTypeNotFound e) {
+					log.log(Level.SEVERE, e.getMessage());
+				}
 				wikier.makeCallsAndCreateFiles();
 				long timetaken = System.currentTimeMillis() - time;
-				System.out.println("For " + reader + " Time Taken "+ (timetaken/1000) + 
+				log.log(Level.INFO, "For " + readerType + " Time Taken "+ (timetaken/1000) + 
 						"." + df.format(timetaken%1000) + " seconds");
 			}
 		}

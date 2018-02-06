@@ -13,13 +13,23 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.JSONObject;
 
 import com.jlt.wikiReader.FileWikiReader;
 
+/**
+ * Implementation for making wiki calls using Brute Force technique and creating files.
+ * 
+ * @author Prabal Ghura
+ *
+ */
 public class BFWikier extends Wikier{
 
+	private static final Logger log = Logger.getLogger(BFWikier.class.getName());
+	
 	public BFWikier(FileWikiReader reader, String outputFolder) {
 		super(reader, outputFolder);
 	}
@@ -54,7 +64,7 @@ public class BFWikier extends Wikier{
 	        		Path path = Paths.get(outputFolder, title + ".txt");
 					Files.write(path, lines, Charset.defaultCharset());
 				} catch (IOException e) {
-					System.err.println(e.getMessage());
+					log.log(Level.SEVERE, e.getMessage());
 				}
 			}
 		}
@@ -64,7 +74,7 @@ public class BFWikier extends Wikier{
 			path = Paths.get(outputFolder+"/"+"log", "invalidChars.txt");
 			Files.write(path, invalidChars, Charset.defaultCharset());
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		}
 	}
 }

@@ -1,6 +1,8 @@
 package com.jlt.wikier.utils;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.net.ssl.SSLContext;
 
@@ -23,7 +25,16 @@ import org.apache.http.protocol.RequestExpectContinue;
 import org.apache.http.protocol.RequestTargetHost;
 import org.apache.http.protocol.RequestUserAgent;
 
+/**
+ * Utils class for instantiating apache API objects
+ * 
+ * @author Prabal Ghura
+ *
+ */
 public class ApacheUtils {
+	
+	private static final Logger log = Logger.getLogger(ApacheUtils.class.getName());
+	
 	public static HttpAsyncRequester getHttpAsyncRequester() {
 		// Create HTTP protocol processing chain
 		HttpProcessor httpproc =  HttpProcessorBuilder.create()
@@ -51,7 +62,7 @@ public class ApacheUtils {
 		try {
 			ioReactor = new DefaultConnectingIOReactor(IOReactorConfig.DEFAULT);
 		} catch (IOReactorException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		}
 		return ioReactor;
 	}
@@ -60,8 +71,8 @@ public class ApacheUtils {
 		SSLContext sslContext = null;
 		try {
 			sslContext = SSLContext.getDefault();
-		} catch (NoSuchAlgorithmException e1) {
-			e1.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			log.log(Level.SEVERE, e.getMessage());
 		}
 		// Create HTTP connection pool
         BasicNIOConnFactory nioConnFactory = new BasicNIOConnFactory(sslContext, null, ConnectionConfig.DEFAULT);

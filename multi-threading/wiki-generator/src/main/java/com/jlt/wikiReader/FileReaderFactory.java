@@ -2,6 +2,8 @@ package com.jlt.wikiReader;
 
 import java.io.File;
 
+import com.jlt.wikier.utils.FileReaderTypeNotFound;
+
 /**
  * Factory class for creating File Readers of different types
  * 
@@ -10,16 +12,16 @@ import java.io.File;
  */
 public class FileReaderFactory {
 	
-	public static FileWikiReader getFileReader(String type, File file) {
+	public static FileWikiReader getFileReader(FileReaderType type, File file) throws FileReaderTypeNotFound {
 		switch (type) {
-		case "LineSeparated":
+		case LineSeparated:
 			return new LSFileReader(file);
-		case "CommaSeparated":
+		case CommaSeparated:
 			return new CSFileReader(file);
-		case "LineTabSeparated":
+		case LineTabSeparated:
 			return new LSTSFileReader(file);
 		default:
-			return null;
+			throw new FileReaderTypeNotFound();
 		}
 	}
 }
