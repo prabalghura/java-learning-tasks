@@ -14,6 +14,8 @@ public class WikierFactory {
 		switch (type) {
 		case BruteForce:
 			return new BFWikier(reader, outputFolder);
+		case Executor:
+			return new ExecutorWikier(reader, outputFolder);
 		default:
 			throw new WikierTypeNotFound();
 		}
