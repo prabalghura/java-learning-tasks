@@ -1,4 +1,4 @@
-package com.jlt.multiThreading;
+package com.jlt.multithreading;
 
 import java.io.File;
 

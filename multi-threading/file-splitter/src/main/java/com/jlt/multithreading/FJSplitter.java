@@ -1,9 +1,7 @@
-package com.jlt.multiThreading;
+package com.jlt.multithreading;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,7 +11,8 @@ import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveAction;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Implementation class for Splitting up using Fork & Join Technique
@@ -21,10 +20,11 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Prabal Ghura
  *
  */
-public class ForkJoin extends Splitter{
+public class FJSplitter extends Splitter{
 	
+	private static final Logger log = Logger.getLogger(FJSplitter.class.getName());
 	
-	public ForkJoin(File file, int linesPerFile, String outputFolder) {
+	public FJSplitter(File file, int linesPerFile, String outputFolder) {
 		super(file, linesPerFile, outputFolder);
 		Forker.outputFolder = this.outputFolder;
 		Forker.linesPerFile = linesPerFile;
@@ -39,13 +39,13 @@ public class ForkJoin extends Splitter{
 			lines = Files.readAllLines(file.toPath());
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		}
 		ForkJoinPool commonPool = ForkJoinPool.commonPool();
 		commonPool.invoke(new Forker(lines, 0));
 		
 		long timetaken = System.currentTimeMillis() - time;
-		System.out.println("For " + linesPerFile + " Time Taken "+ (timetaken/1000) + "." + (timetaken%1000) + " seconds");
+		log.log(Level.INFO, "For " + linesPerFile + " Time Taken "+ (timetaken/1000) + "." + (timetaken%1000) + " seconds");
 	}
 	
 	public static class Forker extends RecursiveAction {
@@ -74,7 +74,7 @@ public class ForkJoin extends Splitter{
 	        		Path path = Paths.get(outputFolder, "data_"+ (startingIndex/linesPerFile) +".csv");
 					Files.write(path, lines, Charset.defaultCharset());
 				} catch (IOException e) {
-					e.printStackTrace();
+					log.log(Level.SEVERE, e.getMessage());
 				}
 	        }
 	    }
