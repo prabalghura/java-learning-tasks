@@ -7,5 +7,5 @@ package com.jlt.wikier;
  *
  */
 public enum WikierType {
-	BruteForce, Executor
+	BruteForce, Executor, Async
 }

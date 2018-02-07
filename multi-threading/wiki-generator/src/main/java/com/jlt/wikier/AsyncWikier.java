@@ -4,7 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
@@ -21,6 +26,7 @@ import org.apache.http.nio.protocol.HttpAsyncRequester;
 import org.apache.http.nio.reactor.ConnectingIOReactor;
 import org.apache.http.nio.reactor.IOEventDispatch;
 import org.apache.http.protocol.HttpCoreContext;
+import org.json.JSONObject;
 
 import com.jlt.wikiReader.FileWikiReader;
 import com.jlt.wikier.utils.ApacheUtils;
@@ -101,16 +107,30 @@ public class AsyncWikier extends Wikier{
         				@Override
         				public void completed(final List<HttpResponse> result) {
         					latch.countDown();
-        					for (int i=0; i<packSize ;i++) {
+        					int size = result.size();
+        					for (int i=0; i<size ;i++) {
         						try {
         							HttpResponse response = result.get(i);
         							String word = partKeywords.get(i);
         							BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
         							String line = rd.readLine();
         							if(line == null)
-        								log.log(Level.INFO, word+"->"+response.getStatusLine().getStatusCode());
-        							else
-        								log.log(Level.INFO, line);
+        								log.log(Level.WARNING, word+"->"+response.getStatusLine().getStatusCode());
+        							else {
+        								JSONObject json = new JSONObject(response);				
+        								if(json.has("title") && json.has("extract"))
+        								{
+        									String extract = json.getString("extract");
+        									List<String> lines = Arrays.asList(extract.split("\\n"));
+        									String title = json.getString("title");
+        									try {
+        						        		Path path = Paths.get(outputFolder, title + ".txt");
+        										Files.write(path, lines, Charset.defaultCharset());
+        									} catch (IOException e) {
+        										log.log(Level.SEVERE, e.getMessage());
+        									}
+        								}
+        							}
         						} catch (UnsupportedOperationException | IOException e) {
         							log.log(Level.SEVERE, e.getMessage());
         						}
@@ -133,13 +153,13 @@ public class AsyncWikier extends Wikier{
         	try {
         		latch.await();
         	} catch (InterruptedException e) {
-        		e.printStackTrace();
+        		log.log(Level.SEVERE, e.getMessage());
         	}
         }
         try {
 			ioReactor.shutdown();
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		}
 	}
 	
