@@ -42,7 +42,7 @@ public class StreamFileWordExtractor extends FileWordExtractor{
 			filePaths.forEach(file -> {
 				if (!file.endsWith(".txt")) {
 					try {
-						Stream<String> fileLines = Files.lines(file).map(line -> line.split("\\s+")).flatMap(Arrays::stream).sorted();
+						Stream<String> fileLines = Files.lines(file).map(line -> line.split(" ")).flatMap(Arrays::stream);
 						FileUtils.append(CounterConstants.INTERIM_FILE, fileLines);
 					} catch (Exception e) {
 						log.error("Error while writing to the file :" + e.getMessage());
