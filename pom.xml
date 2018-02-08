@@ -1,11 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.imaginea.multi</groupId>
-  <artifactId>learning-tasks</artifactId>
+  <artifactId>java-learning-Prabal</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>java-learning-tasks-13106</name>
+  <name>java-learning-Prabal</name>
   <description>Java Learning Tasks Submission by Prabal Ghura</description>
+  
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+  
   <modules>
   	<module>multi-threading</module>
   	<module>refactor</module>
