@@ -34,4 +34,9 @@ public class CacheNode<T>{
 	public T getValue() {
 		return value;
 	}
+
+	@Override
+	public boolean equals(Object arg0) {
+		return this.getValue().equals(arg0);
+	}
 }

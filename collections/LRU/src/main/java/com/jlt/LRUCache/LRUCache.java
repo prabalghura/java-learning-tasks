@@ -2,6 +2,12 @@ package com.jlt.LRUCache;
 
 import com.jlt.LRUCache.exception.LRUCacheException;
 
+/**
+ * Abstract class for Generic LRU Cache
+ * 
+ * @author Prabal Ghura
+ *
+ */
 public abstract class LRUCache<T> {
 	
 	protected Integer capacity;
