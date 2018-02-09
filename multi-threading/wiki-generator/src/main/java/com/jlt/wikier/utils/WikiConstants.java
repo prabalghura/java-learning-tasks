@@ -1,35 +1,32 @@
 package com.jlt.wikier.utils;
 
 import java.io.File;
-
-import com.jlt.wikiReader.FileReaderType;
+import com.jlt.wikireader.FileReaderType;
 
 /**
- * Utils class for providing files and paths for reading input and providing output
- * TODO: to be replaced by properties file soon.
+ * Utils class for providing filePath based on ReaderType
  * 
  * @author Prabal Ghura
  *
  */
 public class WikiConstants {
-	public static final String basePath = "/home/prabhalg/Documents/Projects/Java/Task2";
 	
-	private static final String LineSeparated = "Multithreading_Task2_ProgrammingLanguages.txt";
-	
-	private static final String CommaSeparated = "Multithreading_Task_2_java Keywords.txt";
-	
-	private static final String LineTabSeparated = "Multithreading_Task_2_fortune1000companies.txt";
+	private static final String BASEPATH = "basePath";
 	
 	public static File getFile(FileReaderType type) {
 		switch (type) {
-		case LineSeparated:
-			return new File(basePath, LineSeparated);
-		case CommaSeparated:
-			return new File(basePath, CommaSeparated);
-		case LineTabSeparated:
-			return new File(basePath, LineTabSeparated);
+		case LINESEPARATED:
+			return new File(PropertiesUtils.getProperty(BASEPATH), PropertiesUtils.getProperty("lineSeparatedFile"));
+		case COMMASEPARATED:
+			return new File(PropertiesUtils.getProperty(BASEPATH), PropertiesUtils.getProperty("commaSeparatedFile"));
+		case LINETABSEPARATED:
+			return new File(PropertiesUtils.getProperty(BASEPATH), PropertiesUtils.getProperty("lineTabSeparatedFile"));
 		default:
 			return null;
 		}
+	}
+
+	private WikiConstants() {
+		super();
 	}
 }

@@ -1,4 +1,4 @@
-package com.jlt.wikiReader;
+package com.jlt.wikireader;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class LSTSFileReader extends LSFileReader{
 	@Override
 	public List<String> getKeywords() {
 		List<String> linesRaw = super.getKeywords();
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		for(String s : linesRaw) {
 			String[] tokens = s.split("\\t");
 			String keyword = tokens[1].trim();

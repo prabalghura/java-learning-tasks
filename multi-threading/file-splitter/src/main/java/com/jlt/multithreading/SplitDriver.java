@@ -1,5 +1,10 @@
 package com.jlt.multithreading;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.jlt.multithreading.utils.SplitterNotFound;
+
 /**
  * Driver class for running various Techniques
  * 
@@ -8,7 +13,13 @@ package com.jlt.multithreading;
  */
 public class SplitDriver {
 	
+	private static final Logger log = Logger.getLogger(SplitDriver.class.getName());
+	
 	public static void main(String[] args) {
-		SplitProvider.execute();
+		try {
+			SplitProvider.execute();
+		} catch (SplitterNotFound e) {
+			log.log(Level.SEVERE, e.getMessage());
+		}
 	}
 }

@@ -14,12 +14,16 @@ public class SplitterFactory {
 	
 	public static Splitter getSplitter(SplitterType type, File file, int linesPerFile, String outputFolder) throws SplitterNotFound {
 		switch (type) {
-		case ForkJoin:
+		case FORKJOIN:
 			return new FJSplitter(file, linesPerFile, outputFolder);
-		case BruteForce:
+		case BRUTEFORCE:
 			return new BFSplitter(file, linesPerFile, outputFolder);
 		default:
-			throw new SplitterNotFound();
+			throw new SplitterNotFound("Splitter type cannot be found");
 		}
+	}
+
+	private SplitterFactory() {
+		super();
 	}
 }

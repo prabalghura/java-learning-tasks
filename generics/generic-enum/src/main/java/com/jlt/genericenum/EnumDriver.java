@@ -1,6 +1,5 @@
 package com.jlt.genericenum;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +20,7 @@ public class EnumDriver {
 			log.log(Level.INFO, day);
 			day = GenericEnum.getEnumFromValue(WeekDay.class, "dummy").toString();
 			log.log(Level.INFO, day);
-		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | EnumNotFoundException e) {
+		} catch (EnumNotFoundException e) {
 			log.log(Level.SEVERE, e.getMessage());
 		}
 	}

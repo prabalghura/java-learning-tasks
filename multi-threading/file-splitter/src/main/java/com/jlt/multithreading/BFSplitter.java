@@ -2,7 +2,6 @@ package com.jlt.multithreading;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -31,13 +30,11 @@ public class BFSplitter extends Splitter{
 	@Override
 	public void split() {
 		long time = System.currentTimeMillis();
-		BufferedReader fileReader = null;
-		List<String> fileText = new ArrayList<String>();
+		List<String> fileText = new ArrayList<>();
 		String fileLine = "";
 		int linecounter = 0;
 		int filecounter = 0;
-		try {
-			fileReader = new BufferedReader(new FileReader(file));
+		try(BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
 			fileLine = fileReader.readLine();
 			while(fileLine != null) {
 				linecounter++;
@@ -50,20 +47,11 @@ public class BFSplitter extends Splitter{
 				fileLine = fileReader.readLine();
 			}
 			write(fileText, filecounter);
-		} catch (FileNotFoundException e) {
-			log.log(Level.SEVERE, e.getMessage());
 		} catch (IOException e) {
 			log.log(Level.SEVERE, e.getMessage());
 		}
-		finally {
-			try {
-				fileReader.close();
-			} catch (IOException e) {
-				log.log(Level.SEVERE, e.getMessage());
-			}
-		}
 		long timetaken = System.currentTimeMillis() - time;
-		log.log(Level.INFO, "For " + linesPerFile + " Time Taken "+ (timetaken/1000) + "." + (timetaken%1000) + " seconds");
+		log.log(Level.INFO, () -> "For " + linesPerFile + " Time Taken "+ (timetaken/1000) + "." + (timetaken%1000) + " seconds");
 	}
 	
 	private void write(List<String>  text, int filecount) {

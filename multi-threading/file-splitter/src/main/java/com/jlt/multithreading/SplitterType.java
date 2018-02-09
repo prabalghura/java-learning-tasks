@@ -7,5 +7,5 @@ package com.jlt.multithreading;
  *
  */
 public enum SplitterType {
-	ForkJoin, BruteForce
+	FORKJOIN, BRUTEFORCE
 }

@@ -10,11 +10,13 @@ import com.jlt.counter.exception.FileCounterException;
  */
 public class FileWordExtractorFactory {
 	public static FileWordExtractor getExtractor(FileExtractorType type, String filesPath) throws FileCounterException {
-		switch (type) {
-		case Stream:
+		if (type == FileExtractorType.STREAM) 
 			return new StreamFileWordExtractor(filesPath);
-		default:
+		else
 			throw new FileCounterException("Extractor not found");
-		}
+	}
+
+	private FileWordExtractorFactory() {
+		super();
 	}
 }

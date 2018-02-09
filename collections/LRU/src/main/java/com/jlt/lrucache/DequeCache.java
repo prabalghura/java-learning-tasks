@@ -1,9 +1,9 @@
-package com.jlt.LRUCache;
+package com.jlt.lrucache;
 
 import java.util.Objects;
 
-import com.jlt.LRUCache.exception.LRUCacheException;
-import com.jlt.LRUCache.model.CacheNode;
+import com.jlt.lrucache.exception.LRUCacheException;
+import com.jlt.lrucache.model.CacheNode;
 
 /**
  * Implementation for LRU cache using custom deque condition generic type must honor and equals() methods contract
@@ -27,12 +27,12 @@ public class DequeCache<T> extends LRUCache<T>{
 	@Override
 	public String toString() {
 		StringBuilder output = new StringBuilder("Cache is ");
-		CacheNode<T> head = this.head;
+		CacheNode<T> temphead = this.head;
 		Boolean isEmpty = true;
-		while(head != null) {
+		while(temphead != null) {
 			isEmpty = false;
-			output.append(head.toString() + ", ");
-			head = head.getNext();
+			output.append(temphead.toString() + ", ");
+			temphead = temphead.getNext();
 		}
 		if(!isEmpty)
 			output.setLength(output.length()-2);
@@ -41,11 +41,11 @@ public class DequeCache<T> extends LRUCache<T>{
 	}
 	
 	protected CacheNode<T> get(T t) {
-		CacheNode<T> head = this.head;
-		while(head != null) {
-			if(head.equals(t))
-				return head;
-			head = head.getNext();
+		CacheNode<T> temphead = this.head;
+		while(temphead != null) {
+			if(temphead.equals(t))
+				return temphead;
+			temphead = temphead.getNext();
 		}
 		return null;
 	}
@@ -58,7 +58,7 @@ public class DequeCache<T> extends LRUCache<T>{
 	}
 	
 	protected CacheNode<T> addNewNode(T t) {
-		CacheNode<T> node = new CacheNode<T>(t);
+		CacheNode<T> node = new CacheNode<>(t);
 		if(this.size==this.capacity) removeLast();
 		if(this.size==0) this.tail = node;
 		setAsFront(node);

@@ -7,7 +7,8 @@ package com.jlt.counter;
  *
  */
 import java.text.DecimalFormat;
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.jlt.counter.exception.FileCounterException;
 import com.jlt.counter.extractor.FileExtractorType;
@@ -18,20 +19,18 @@ import com.jlt.counter.utils.CounterConstants;
 public class CountProvider {
 	private static final Logger log = Logger.getLogger(CountProvider.class.getName());
 	
-	public static void execute() {
+	public static void execute() throws FileCounterException {
 		DecimalFormat df = new DecimalFormat("#000");
 		long time = System.currentTimeMillis();
-		FileWordCounter counter = null;
-		FileWordExtractor extractor = null;
-		try {
-			counter = WordCounterFactory.getCounter(FileWordCounterType.Stream);
-			extractor = FileWordExtractorFactory.getExtractor(FileExtractorType.Stream, CounterConstants.INPUT_FOLDER);
-		} catch (FileCounterException e) {
-			log.error(e.getMessage());
-		}
+		FileWordCounter counter = WordCounterFactory.getCounter(FileWordCounterType.STREAM);
+		FileWordExtractor extractor = FileWordExtractorFactory.getExtractor(FileExtractorType.STREAM, CounterConstants.INPUT_FOLDER);
 		extractor.writeWords();
 		counter.countWords();
 		long timetaken = System.currentTimeMillis() - time;
-		System.out.println(("Time Taken "+ (timetaken/1000) + "." + df.format(timetaken%1000) + " seconds"));
+		log.log(Level.INFO, () -> "Time Taken "+ (timetaken/1000) + "." + df.format(timetaken%1000) + " seconds");
+	}
+
+	private CountProvider() {
+		super();
 	}
 }

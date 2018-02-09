@@ -10,11 +10,13 @@ import com.jlt.counter.exception.FileCounterException;
  */
 public class WordCounterFactory {
 	public static FileWordCounter getCounter(FileWordCounterType type) throws FileCounterException {
-		switch (type) {
-		case Stream:
+		if (type == FileWordCounterType.STREAM)
 			return new StreamFileWordCounter();
-		default:
+		else
 			throw new FileCounterException("Counter not found");
-		}
+	}
+
+	private WordCounterFactory() {
+		super();
 	}
 }

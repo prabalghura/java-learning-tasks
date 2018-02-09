@@ -1,4 +1,4 @@
-package com.jlt.wikiReader;
+package com.jlt.wikireader;
 
 /**
  * Enum representing FileReader of different types
@@ -7,5 +7,5 @@ package com.jlt.wikiReader;
  *
  */
 public enum FileReaderType {
-	LineSeparated, CommaSeparated, LineTabSeparated
+	LINESEPARATED, COMMASEPARATED, LINETABSEPARATED
 }

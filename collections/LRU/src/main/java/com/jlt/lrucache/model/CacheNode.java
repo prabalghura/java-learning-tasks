@@ -1,4 +1,4 @@
-package com.jlt.LRUCache.model;
+package com.jlt.lrucache.model;
 
 public class CacheNode<T>{
 	
@@ -38,5 +38,10 @@ public class CacheNode<T>{
 	@Override
 	public boolean equals(Object arg0) {
 		return this.getValue().equals(arg0);
+	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 }

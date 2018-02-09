@@ -8,12 +8,4 @@
   <artifactId>file-counter</artifactId>
   <name>word-counter</name>
   <description>to count number of distinct words in a set of files</description>
-  
-  <dependencies>
-  	<dependency>
-		<groupId>log4j</groupId>
-		<artifactId>log4j</artifactId>
-		<version>1.2.17</version>
-	</dependency>
-  </dependencies>
 </project>

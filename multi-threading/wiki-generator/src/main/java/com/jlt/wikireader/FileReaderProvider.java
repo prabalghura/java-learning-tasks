@@ -1,11 +1,11 @@
-package com.jlt.wikiReader;
+package com.jlt.wikireader;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.jlt.wikier.utils.FileReaderTypeNotFound;
+import com.jlt.wikier.utils.FileReaderException;
 import com.jlt.wikier.utils.WikiConstants;
 
 /**
@@ -17,23 +17,22 @@ import com.jlt.wikier.utils.WikiConstants;
 public class FileReaderProvider {
 	private static final Logger log = Logger.getLogger(FileReaderProvider.class.getName());
 	
-	public static void execute() {
+	public static void execute() throws FileReaderException {
 		DecimalFormat df = new DecimalFormat("#000");
 		FileReaderType[] readerTypes = FileReaderType.values();
 		for(FileReaderType readerType: readerTypes) {
 			long time = System.currentTimeMillis();
-			FileWikiReader reader = null;
-			try {
-				reader = FileReaderFactory.getFileReader(readerType, WikiConstants.getFile(readerType));
-			} catch (FileReaderTypeNotFound e) {
-				log.log(Level.SEVERE, e.getMessage());
-			}
+			FileWikiReader reader = FileReaderFactory.getFileReader(readerType, WikiConstants.getFile(readerType));
 			List<String> keywords = reader.getKeywords();
 			for(String s: keywords) {
-				System.out.println(s);
+				log.log(Level.INFO, s);
 			}
 			long timetaken = System.currentTimeMillis() - time;
-			log.log(Level.INFO, "Time Taken "+ (timetaken/1000) + "." + df.format(timetaken%1000) + " seconds");
+			log.log(Level.INFO, () -> "Time Taken "+ (timetaken/1000) + "." + df.format(timetaken%1000) + " seconds");
 		}
+	}
+
+	private FileReaderProvider() {
+		super();
 	}
 }

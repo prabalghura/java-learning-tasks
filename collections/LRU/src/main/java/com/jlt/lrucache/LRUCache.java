@@ -1,6 +1,6 @@
-package com.jlt.LRUCache;
+package com.jlt.lrucache;
 
-import com.jlt.LRUCache.exception.LRUCacheException;
+import com.jlt.lrucache.exception.LRUCacheException;
 
 /**
  * Abstract class for Generic LRU Cache

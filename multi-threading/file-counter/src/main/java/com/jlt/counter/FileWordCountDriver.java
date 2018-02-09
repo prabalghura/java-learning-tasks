@@ -1,5 +1,10 @@
 package com.jlt.counter;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.jlt.counter.exception.FileCounterException;
+
 /**
  * Driver class for Word count function
  * 
@@ -7,7 +12,13 @@ package com.jlt.counter;
  *
  */
 public class FileWordCountDriver {
+	private static final Logger log = Logger.getLogger(FileWordCountDriver.class.getName());
+	
 	public static void main(String[] args) {
-		CountProvider.execute();
+		try {
+			CountProvider.execute();
+		} catch (FileCounterException e) {
+			log.log(Level.SEVERE, e.getMessage());
+		}
 	}
 }

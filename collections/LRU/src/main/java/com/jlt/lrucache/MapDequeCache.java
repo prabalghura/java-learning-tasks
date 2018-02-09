@@ -1,9 +1,10 @@
-package com.jlt.LRUCache;
+package com.jlt.lrucache;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.jlt.LRUCache.exception.LRUCacheException;
-import com.jlt.LRUCache.model.CacheNode;
+
+import com.jlt.lrucache.exception.LRUCacheException;
+import com.jlt.lrucache.model.CacheNode;
 
 /**
  * Implementation for LRU cache using custom deque and hashmap data-structures
@@ -20,7 +21,7 @@ public class MapDequeCache<T> extends DequeCache<T>{
 
 	public MapDequeCache(Integer capacity) throws LRUCacheException {
 		super(capacity);
-		this.map = new HashMap<T, CacheNode<T>>();
+		this.map = new HashMap<>();
 	}
 	
 	@Override

@@ -33,7 +33,7 @@ public class FJSplitter extends Splitter{
 	@Override
 	public void split() {
 		long time = System.currentTimeMillis();
-		List<String> lines = new ArrayList<String>();
+		List<String> lines = new ArrayList<>();
 		
 		try {
 			lines = Files.readAllLines(file.toPath());
@@ -45,7 +45,7 @@ public class FJSplitter extends Splitter{
 		commonPool.invoke(new Forker(lines, 0));
 		
 		long timetaken = System.currentTimeMillis() - time;
-		log.log(Level.INFO, "For " + linesPerFile + " Time Taken "+ (timetaken/1000) + "." + (timetaken%1000) + " seconds");
+		log.log(Level.INFO, () -> "For " + linesPerFile + " Time Taken "+ (timetaken/1000) + "." + (timetaken%1000) + " seconds");
 	}
 	
 	public static class Forker extends RecursiveAction {
@@ -80,7 +80,7 @@ public class FJSplitter extends Splitter{
 	    }
 	 
 	    private List<Forker> createSubtasks() {
-	        List<Forker> subtasks = new ArrayList<Forker>();
+	        List<Forker> subtasks = new ArrayList<>();
 	        
 	        int size = lines.size();
 	        int limit = ((size/linesPerFile)/2)*linesPerFile;

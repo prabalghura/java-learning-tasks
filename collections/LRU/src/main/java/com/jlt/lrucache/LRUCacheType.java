@@ -1,4 +1,4 @@
-package com.jlt.LRUCache;
+package com.jlt.lrucache;
 
 /**
  * Enum representing various implementation types for LRU Cache
@@ -7,5 +7,5 @@ package com.jlt.LRUCache;
  *
  */
 public enum LRUCacheType {
-	Deque, MapDeque
+	DEQUE, MAPDEQUE
 }

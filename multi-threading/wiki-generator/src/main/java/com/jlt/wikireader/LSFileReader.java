@@ -1,4 +1,4 @@
-package com.jlt.wikiReader;
+package com.jlt.wikireader;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class LSFileReader extends FileWikiReader{
 	
 	@Override
 	public List<String> getKeywords() {
-		List<String> lines = new ArrayList<String>();
+		List<String> lines = new ArrayList<>();
 		try {
 			lines = Files.readAllLines(file.toPath());
 		} catch (IOException e) {

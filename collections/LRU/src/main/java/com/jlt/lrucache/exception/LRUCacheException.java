@@ -1,4 +1,4 @@
-package com.jlt.LRUCache.exception;
+package com.jlt.lrucache.exception;
 
 public class LRUCacheException extends Exception{
 

@@ -18,7 +18,7 @@ public abstract class Splitter {
 	public Splitter(File file, int linesPerFile, String outputFolder) {
 		super();
 		String type = this.getClass().getSimpleName();
-		String outPath = outputFolder + "/" + type + "/" + linesPerFile;
+		String outPath = outputFolder + File.separator + type + File.separator + linesPerFile;
 		this.file = file;
 		this.linesPerFile = linesPerFile;
 		this.outputFolder = outPath;

@@ -18,7 +18,12 @@ public class BookFactory {
 			return new FictionBook(title, releaseDate);
 		case(Book.NON_FICTION):
 			return new NonFictionBook(title, releaseDate);
+		default:
+			return null;
 		}
-		return null;
+	}
+
+	private BookFactory() {
+		super();
 	}
 }

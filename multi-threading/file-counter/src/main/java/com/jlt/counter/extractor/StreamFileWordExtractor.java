@@ -5,9 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
-
-import org.apache.log4j.Logger;
 
 import com.jlt.counter.utils.CounterConstants;
 import com.jlt.counter.utils.FileUtils;
@@ -20,7 +20,7 @@ import com.jlt.counter.utils.FileUtils;
  */
 public class StreamFileWordExtractor extends FileWordExtractor{
 	
-	private static final Logger log = Logger.getLogger(StreamFileWordExtractor.class);
+	private static final Logger log = Logger.getLogger(StreamFileWordExtractor.class.getName());
 
 	public StreamFileWordExtractor(String filesPath) {
 		super(filesPath);
@@ -30,27 +30,26 @@ public class StreamFileWordExtractor extends FileWordExtractor{
 	public void writeWords() {
 		Path interimFile = Paths.get(CounterConstants.INTERIM_FILE);
 		try {
-			if (Files.exists(interimFile)) {
+			if (interimFile.toFile().exists()) {
 				Files.delete(interimFile);
 			}
 			Files.createFile(interimFile);
 		} catch (IOException e) {
-			log.error("Problem in writeWords() "+e.getMessage());
+			log.log(Level.SEVERE, "Problem in writeWords() "+e.getMessage());
 		}
 		
-		try (Stream<Path> filePaths = Files.walk(Paths.get(filesPath))) {
+		try (Stream<Path> filePaths = Files.walk(Paths.get(filesPath)) ) {
 			filePaths.forEach(file -> {
-				if (!file.endsWith(".txt")) {
-					try {
-						Stream<String> fileLines = Files.lines(file).map(line -> line.split(" ")).flatMap(Arrays::stream);
-						FileUtils.append(CounterConstants.INTERIM_FILE, fileLines);
+				if (file.toFile().isFile() && file.toFile().getPath().endsWith(".txt")) {
+					try (Stream<String> words = Files.lines(file).map(line -> line.split(" +")).flatMap(Arrays::stream)){
+						FileUtils.append(CounterConstants.INTERIM_FILE, words);
 					} catch (Exception e) {
-						log.error("Error while writing to the file :" + e.getMessage());
+						log.log(Level.SEVERE, "Error while writing to the file :" + e.getMessage());
 					}
 				}
 			});
 		} catch (IOException e) {
-			log.error("Error while streaming the files : " + e.getMessage());
+			log.log(Level.SEVERE, "Error while streaming the files : " + e.getMessage());
 		}
 	}
 }

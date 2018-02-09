@@ -7,5 +7,5 @@ package com.jlt.counter;
  *
  */
 public enum FileWordCounterType {
-	Stream
+	STREAM
 }

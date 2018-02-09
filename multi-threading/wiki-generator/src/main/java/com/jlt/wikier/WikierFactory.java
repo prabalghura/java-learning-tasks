@@ -1,7 +1,7 @@
 package com.jlt.wikier;
 
-import com.jlt.wikiReader.FileWikiReader;
 import com.jlt.wikier.utils.WikierTypeNotFound;
+import com.jlt.wikireader.FileWikiReader;
 
 /**
  * Factory class for creating Wikier of different types
@@ -12,14 +12,16 @@ import com.jlt.wikier.utils.WikierTypeNotFound;
 public class WikierFactory {
 	public static Wikier getFileReader(WikierType type, FileWikiReader reader, String outputFolder) throws WikierTypeNotFound {
 		switch (type) {
-		case BruteForce:
+		case BRUTEFORCE:
 			return new BFWikier(reader, outputFolder);
-		case Executor:
+		case EXECUTOR:
 			return new ExecutorWikier(reader, outputFolder);
-		case Async:
-			return new AsyncWikier(reader, outputFolder);
 		default:
 			throw new WikierTypeNotFound();
 		}
+	}
+
+	private WikierFactory() {
+		super();
 	}
 }

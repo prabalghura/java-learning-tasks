@@ -7,5 +7,5 @@ package com.jlt.counter.extractor;
  *
  */
 public enum FileExtractorType {
-	Stream
+	STREAM
 }

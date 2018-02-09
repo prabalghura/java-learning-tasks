@@ -1,8 +1,7 @@
-package com.jlt.wikiReader;
+package com.jlt.wikireader;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,26 +25,16 @@ public class CSFileReader extends FileWikiReader{
 
 	@Override
 	public List<String> getKeywords() {
-		BufferedReader br = null;
 		String line = "";
-		try {
-			br = new BufferedReader(new FileReader(file));
+		try(BufferedReader br = new BufferedReader(new FileReader(file));) {
 			//because first line contains just description
-			br.readLine();
 			line = br.readLine();
-		} catch (FileNotFoundException e) {
-			log.log(Level.SEVERE, e.getMessage());
+			line = br.readLine();
 		} catch (IOException e) {
 			log.log(Level.SEVERE, e.getMessage());
-		} finally {
-			try {
-				br.close();
-			} catch (IOException e) {
-				log.log(Level.SEVERE, e.getMessage());
-			}
 		}
 		String[] keywordsRaw = line.split(",");
-		List<String> keywords = new ArrayList<String>();
+		List<String> keywords = new ArrayList<>();
 		for(String s:keywordsRaw) {
 			if(s.length()>0)
 			keywords.add(s);

@@ -1,6 +1,6 @@
-package com.jlt.LRUCache;
+package com.jlt.lrucache;
 
-import com.jlt.LRUCache.exception.LRUCacheException;
+import com.jlt.lrucache.exception.LRUCacheException;
 
 /**
  * Factory class for creating various LRU Cache.
@@ -11,12 +11,16 @@ import com.jlt.LRUCache.exception.LRUCacheException;
 public class LRUFactory {
 	public static <T> LRUCache<T> getCache(LRUCacheType type, Integer capacity) throws LRUCacheException {
 		switch (type) {
-		case Deque:
-			return new DequeCache<T>(capacity);
-		case MapDeque:
-			return new MapDequeCache<T>(capacity);
+		case DEQUE:
+			return new DequeCache<>(capacity);
+		case MAPDEQUE:
+			return new MapDequeCache<>(capacity);
 		default:
 			throw new LRUCacheException("Cache Type not found");
 		}
+	}
+
+	private LRUFactory() {
+		super();
 	}
 }

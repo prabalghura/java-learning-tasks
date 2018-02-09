@@ -1,4 +1,4 @@
-package com.jlt.wikiReader;
+package com.jlt.wikireader;
 
 import java.io.File;
 import java.util.List;

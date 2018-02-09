@@ -33,6 +33,10 @@ import org.apache.http.protocol.RequestUserAgent;
  */
 public class ApacheUtils {
 	
+	private ApacheUtils() {
+		super();
+	}
+
 	private static final Logger log = Logger.getLogger(ApacheUtils.class.getName());
 	
 	public static HttpAsyncRequester getHttpAsyncRequester() {

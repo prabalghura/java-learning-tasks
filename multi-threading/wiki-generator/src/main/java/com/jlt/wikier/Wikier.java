@@ -1,6 +1,6 @@
 package com.jlt.wikier;
 
-import com.jlt.wikiReader.FileWikiReader;
+import com.jlt.wikireader.FileWikiReader;
 
 /**
  * Abstract class for making a wiki call for a list of keywords and create files with descriptions.
@@ -10,7 +10,7 @@ import com.jlt.wikiReader.FileWikiReader;
  */
 public abstract class Wikier {
 	
-	protected static final String baseUrl = "https://en.wikipedia.org/api/rest_v1/page/summary/";
+	protected static final String BASEURL = "https://en.wikipedia.org/api/rest_v1/page/summary/";
 	
 	protected FileWikiReader reader;
 	
