@@ -16,5 +16,6 @@
   	<module>multi-threading</module>
   	<module>refactor</module>
   	<module>collections</module>
+  	<module>generics</module>
   </modules>
 </project>
