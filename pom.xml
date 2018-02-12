@@ -17,5 +17,6 @@
   	<module>refactor</module>
   	<module>collections</module>
   	<module>generics</module>
+  	<module>annotations</module>
   </modules>
 </project>
