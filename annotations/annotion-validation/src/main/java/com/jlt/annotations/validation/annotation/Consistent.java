@@ -6,13 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Custom annotation class for custom getter method
+ * Custom annotation class for consistency validations
  * 
  * @author Prabal Ghura
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface GetterMethod {
+public @interface Consistent {
 	String value();
 }

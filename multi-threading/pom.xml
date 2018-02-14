@@ -13,5 +13,6 @@
   	<module>file-splitter</module>
   	<module>file-counter</module>
   	<module>auto-suggest</module>
+  	<module>prime-generator</module>
   </modules>
 </project>

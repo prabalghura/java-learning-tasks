@@ -2,12 +2,12 @@ package com.jlt.annotations.validation.model;
 
 import java.util.Date;
 
-import com.jlt.annotations.validation.annotation.CField;
-import com.jlt.annotations.validation.annotation.MVField;
-import com.jlt.annotations.validation.annotation.VField;
-import com.jlt.annotations.validation.validator.VMaxLength;
-import com.jlt.annotations.validation.validator.VNull;
-import com.jlt.annotations.validation.validator.VGender;
+import com.jlt.annotations.validation.annotation.Consistent;
+import com.jlt.annotations.validation.annotation.Gender;
+import com.jlt.annotations.validation.annotation.Length;
+import com.jlt.annotations.validation.annotation.MaxLength;
+import com.jlt.annotations.validation.annotation.MinLength;
+import com.jlt.annotations.validation.annotation.NotNull;
 
 /**
  * Model class for Aadhaar Document
@@ -17,44 +17,26 @@ import com.jlt.annotations.validation.validator.VGender;
  */
 public class Aadhar extends Document{
 	
-	@MVField(validators = {
-		@VField(type=VNull.class),
-		@VField(type=VMaxLength.class, params={"length=50"}) })
-	@CField(name="Full Name")
+	@Consistent("Full Name")
+	@MaxLength(50)
+	@MinLength(3)
+	@NotNull
 	private String fullname;
 	
-	@MVField(validators= {
-		@VField(type=VNull.class),
-		@VField(type=VGender.class)})
+	@Gender
+	@NotNull
 	private String gender;
 	
-	@MVField(validators= {
-			@VField(type=VNull.class),
-			@VField(type=VMaxLength.class, params={"length=100"})})
+	@MaxLength(100)
+	@NotNull
 	private String address;
 	
-	@MVField(validators= {
-			@VField(type=VNull.class),
-			@VField(type=VMaxLength.class, params={"length=12"})})
+	@Length(12)
+	@NotNull
 	private String aadharNumber;
 	
+	@NotNull
 	private Date dob;
-
-	/**
-	 * @param fullname
-	 * @param gender
-	 * @param address
-	 * @param aadharNumber
-	 * @param dob
-	 */
-	public Aadhar(String fullname, String gender, String address, String aadharNumber, Date dob) {
-		super();
-		this.fullname = fullname;
-		this.gender = gender;
-		this.address = address;
-		this.aadharNumber = aadharNumber;
-		this.dob = dob;
-	}
 
 	/**
 	 * @return the fullname

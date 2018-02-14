@@ -6,13 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Custom annotation class for consistency validations
+ * Custom annotation class for field length validations
  * 
  * @author Prabal Ghura
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface CField {
-	String name();
+public @interface Length {
+	int value();
 }

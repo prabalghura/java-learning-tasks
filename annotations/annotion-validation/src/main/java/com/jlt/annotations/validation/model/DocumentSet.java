@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.xml.bind.ValidationException;
 
-import com.jlt.annotations.validation.annotation.CField;
+import com.jlt.annotations.validation.annotation.Consistent;
 import com.jlt.annotations.validation.utils.ReflectionsUtils;
 
 /**
@@ -83,18 +83,18 @@ public class DocumentSet {
 	private void consistencyCheck() throws ValidationException {
 		Map<String, List<Object>> consistentMap = new HashMap<>();
 		for(Document document: this.documents) {
-			List<Field> validateFields = ReflectionsUtils.getFieldsAnnotatedWithForDocument(CField.class, document.getClass());
+			List<Field> validateFields = ReflectionsUtils.getFieldsAnnotatedWithForDocument(Consistent.class, document.getClass());
 			for(Field field: validateFields) {
-				CField consistent = field.getAnnotation(CField.class);
+				Consistent consistent = field.getAnnotation(Consistent.class);
 				Object value = ReflectionsUtils.getFieldValue(document, field);
 				List<Object> list;
-				if(consistentMap.containsKey(consistent.name())) {
-					list = consistentMap.get(consistent.name());
+				if(consistentMap.containsKey(consistent.value())) {
+					list = consistentMap.get(consistent.value());
 				} else {
 					list = new ArrayList<>();
 				}
 				list.add(value);
-				consistentMap.put(consistent.name(), list);
+				consistentMap.put(consistent.value(), list);
 			}
 		}
 		for (Map.Entry<String, List<Object>> entry : consistentMap.entrySet())

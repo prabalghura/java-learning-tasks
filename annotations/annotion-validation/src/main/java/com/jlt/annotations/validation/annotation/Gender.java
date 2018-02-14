@@ -6,13 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Custom annotation class for custom getter method
+ * Custom annotation class for Gender field validations
  * 
  * @author Prabal Ghura
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface GetterMethod {
-	String value();
+public @interface Gender {
 }
