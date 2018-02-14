@@ -1,8 +1,16 @@
 package com.jlt.annotations.validation.model;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.ValidationException;
+
+import com.jlt.annotations.validation.annotation.CField;
+import com.jlt.annotations.validation.utils.ReflectionsUtils;
 
 /**
  * Collection class to hold various documents especially to perform consistency checks
@@ -12,6 +20,8 @@ import java.util.List;
  */
 public class DocumentSet {
 	private List<? extends Document> documents;
+	
+	private List<String> validationErrors;
 
 	/**
 	 * @param documents
@@ -31,31 +41,72 @@ public class DocumentSet {
 	
 	/**
 	 * @return the validationErrors
+	 * @throws ValidationException 
 	 */
-	public List<String> getValidationErrors() {
+	public List<String> getValidationErrors() throws ValidationException {
 		validate();
-		List<String> validationErrors = new ArrayList<>();
-		for(Document document: this.documents) {
-			validationErrors.addAll(document.getValidationErrors());
-		}
 		return validationErrors;
 	}
 	
 	/**
-	 * Checks if entire documentSet is valid
+	 * Checks if document is valid
 	 * 
 	 * @return
+	 * @throws ValidationException 
 	 */
-	public Boolean isValid() {
+	public Boolean isValid() throws ValidationException {
 		validate();
-		return getValidationErrors().isEmpty();
+		return this.validationErrors.isEmpty();
 	}
 	
 	/**
 	 * For field validations & consistency validations
+	 * @throws ValidationException 
 	 * 
 	 */
-	public void validate() {
-		//TODO: something
+	private void validate() throws ValidationException {
+		this.validationErrors = new ArrayList<>();
+		
+		// Perform individual field validations
+		for(Document document: this.documents) {
+			List<String> errors = document.getValidationErrors();
+			for(String error: errors) {
+				this.validationErrors.add("For " + document.getClass().getSimpleName() + " " + error);
+			}
+		}
+		
+		if(this.validationErrors.isEmpty()) {
+			consistencyCheck();
+		}
+	}
+	
+	private void consistencyCheck() throws ValidationException {
+		Map<String, List<Object>> consistentMap = new HashMap<>();
+		for(Document document: this.documents) {
+			List<Field> validateFields = ReflectionsUtils.getFieldsAnnotatedWithForDocument(CField.class, document.getClass());
+			for(Field field: validateFields) {
+				CField consistent = field.getAnnotation(CField.class);
+				Object value = ReflectionsUtils.getFieldValue(document, field);
+				List<Object> list;
+				if(consistentMap.containsKey(consistent.name())) {
+					list = consistentMap.get(consistent.name());
+				} else {
+					list = new ArrayList<>();
+				}
+				list.add(value);
+				consistentMap.put(consistent.name(), list);
+			}
+		}
+		for (Map.Entry<String, List<Object>> entry : consistentMap.entrySet())
+		{
+			List<Object> list = entry.getValue();
+			Object value = list.get(0);
+			for(Object inValue: list) {
+				if(!value.equals(inValue)) {
+					this.validationErrors.add("Field " + entry.getKey() + " is not consistent accross all documents.");
+					break;
+				}
+			}
+		}
 	}
 }

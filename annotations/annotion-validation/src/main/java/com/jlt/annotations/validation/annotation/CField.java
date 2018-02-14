@@ -1,23 +1,18 @@
 package com.jlt.annotations.validation.annotation;
 
-import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
-import com.jlt.annotations.validation.validator.Validator;
+import java.lang.annotation.Target;
 
 /**
- * Custom annotation class for field validations
+ * Custom annotation class for consistency validations
  * 
  * @author Prabal Ghura
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface ValidateField {
-	
-	Class<? extends Validator> clazz();
-	
-	String[] values() default {};
+public @interface CField {
+	String name();
 }
